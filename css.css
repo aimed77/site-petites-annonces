@@ -1,0 +1,7 @@
+/* class de test */
+.test {
+    border: red 1 px solid;
+}
+.testEnfant {
+    border: greenyellow 1 px solid;
+}
