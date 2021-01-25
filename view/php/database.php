@@ -18,21 +18,22 @@ try {
     return $pdo;
 }
 
-function createUser(string $nom,string $nationalite,string $age,string $taille,string $poste, $photo) :bool
+function createUser(string $nom,string $nationalite,string $age,string $poste,string $email, $photo) :bool
 {
     $pdo = getPdo();
-    $query = $pdo->prepare('INSERT INTO test (nom, nationalite, age, taille, poste, photo) VALUES (:nom, :nationalite, :age, :taille, :poste, :photo)');
-    //$query = $pdo->prepare('INSERT INTO test (nom, nationalite, age, taille, poste, photo) VALUES (?, ?, ?, ?, ?, ?)');
+    $query = $pdo->prepare('INSERT INTO test (nom, nationalite, age, poste, email, photo) VALUES (:nom, :nationalite, :age, :poste, :email, :photo)');
+    //$query = $pdo->prepare('INSERT INTO test (nom, nationalite, age, poste, email, photo) VALUES (?, ?, ?, ?, ?, ?)');
   
     $query->bindValue(':nom',$nom, PDO::PARAM_STR);
     $query->bindValue(':nationalite',$nationalite, PDO::PARAM_STR);
     $query->bindValue(':age',$age, PDO::PARAM_STR);
-    $query->bindValue(':taille',$taille, PDO::PARAM_INT);
     $query->bindValue(':poste',$poste, PDO::PARAM_STR);
+    $query->bindValue(':email',$email, PDO::PARAM_STR);
     $query->bindValue(':photo',$photo, PDO::PARAM_STR);
     if (!$query->execute());
-  // if (!$query->execute(['nom' =>$nom,'nationalite'=>$nationalite,'age'=>$age,'taille'=>$taille,'poste'=>$poste,'photo'=>$photo]));
-   // if (!$query->execute([$nom,$nationalite,$age,$taille,$poste,$photo]));
+  // if (!$query->execute(['nom' =>$nom,'nationalite'=>$nationalite,'age'=>$age,'poste'=>$poste,'email'=>$email,'photo'=>$photo]));
+   // if (!$query->execute([$nom,$nationalite,$age,$poste,$email,$photo]));
+
   
   {return false;}
 }
@@ -64,12 +65,12 @@ function readLastUser()
 }
 
 // Mise a jour de test en fonction de l'ID
-function updateUser(string $nom,string $nationalite,string $age,string $taille,string $poste, string $photo, int $id) :bool
+function updateUser(string $nom,string $nationalite,string $age,string $poste,string $email, string $photo, int $id) :bool
 {
     $pdo = getPdo();
-    $query = 'UPDATE test SET nom =?, nationalite =?, age =?, taille =?, poste =?, photo =? WHERE id =?';
+    $query = 'UPDATE test SET nom =?, nationalite =?, age =?, poste =?, email =?, photo =? WHERE id =?';
     $stmt = $pdo->prepare($query);
-    if (!$stmt->execute([$nom, $nationalite, $age, $taille, $poste, $photo, $id]));
+    if (!$stmt->execute([$nom, $nationalite, $age, $poste, $email, $photo, $id]));
     return false;
 }
 
