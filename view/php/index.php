@@ -13,6 +13,8 @@ require_once('database.php');
 
 <body>
 
+<h1></h1>
+
     <form action="creation.php" method="POST" enctype="multipart/form-data">
                         <br />
 
@@ -181,7 +183,7 @@ require_once('database.php');
     echo "<br><br><br><br>";
      $users = readUsers();
 $users2 = array_reverse($users);
-        foreach ($users2 as $key => $value) {
+        foreach ($users2 as $cle => $value) {
             echo "<a href='supprimer.php?id=".$value['id']."'>Supprimer</a>";
             echo "<br>".$value['nom'];
             echo "<br>".$value['nationalite'];

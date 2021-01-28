@@ -46,6 +46,7 @@ function readUsers() : array
     return $users;     
 }
 
+
 function readLastUser() 
 {
     $pdo = getPdo();
