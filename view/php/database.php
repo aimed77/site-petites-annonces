@@ -41,7 +41,7 @@ function createUser(string $nom,string $nationalite,string $age,string $poste,st
 function readUsers() : array
 {
     $pdo = getPdo();
-    $query = $pdo->query('SELECT * FROM test');
+    $query = $pdo->query('SELECT * FROM `test` ORDER BY `id` DESC');
     $users = $query->fetchAll();
     return $users;     
 }
@@ -51,8 +51,8 @@ function readLastUser()
 {
     $pdo = getPdo();
     $query = $pdo->query('SELECT * FROM test');
-    $test = $query->fetchAll();
-    $enduser = end($test);
+    $user = $query->fetchAll();
+    $enduser = end($user);
     var_dump($enduser);
     echo "<br> début du dernnier enregistrement <br>";
   foreach ($enduser as $value) {
@@ -62,7 +62,7 @@ function readLastUser()
            
          } else  {  echo "----------------";} 
   }
-     echo "<br>Fin du dernier enregistrement <br><br><br><a href='index.php'>retour</a>";
+     echo "<br>Fin du dernier enregistrement <br><br><br><a href='index_prive.php'>retour</a>";
 }
 
 // Mise a jour de test en fonction de l'ID
@@ -81,6 +81,6 @@ function deleteUser(int $id)
     $query = 'DELETE FROM test WHERE id =?';
     $stmt= $pdo->prepare($query);
     if (!$stmt->execute([$id]));
-    header('Location: index.php?message=<h1>test id: '. $id . ' bien supprimé</h1>');
+    header('Location: test.php?message=<h1>test id: '. $id . ' bien supprimé</h1>');
     exit();    
 }

@@ -1,79 +1,74 @@
-<?php
-require_once('database.php');
-// reception des variables POST du formulaire
-$id = trim($_GET['id']);
-$nom = $_GET['nom'];
-$nationalite = $_GET['nationalite'];
-$age = $_GET['age'];
-$poste = $_GET['poste'];
-$email = $_GET['email'];
-$photo = $_GET['photo'];
-/***************************************************** */
-@$uploaddir = 'photo/../';
-@$uploadfile = $uploaddir . basename($_FILES['photo']['name']);
-echo '<pre>';
-move_uploaded_file(@$_FILES['photo']['tmp_name'], @$uploadfile);
-/****************************************************** */
-// si id est define & est un numeric dans _POST
-if (isset( $_POST['id'] ) && is_numeric( $_POST['id'] ) )
-   {
-    $id = $_POST['id'];
-    $nom = $_POST['nom'];
-    $nationalite = $_POST['nationalite'];
-    $age = $_POST['age'];
-    $poste = $_POST['poste'];
-    $email = $_POST['email'];
-    $photo = $uploadfile;
-    updateUser($nom, $nationalite, $age, $poste, $email, $photo, $id);
-    header('Location:test.php');
-} 
-else
-    echo "/***********************************************************************************************************/";
-   
-    $majUser = readLastUser();
-    print_r($majUser.'<br>');
- 
-?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>maj</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <!-- mon css -->
+    <link href="../css/css.css" rel="stylesheet" />
+    <!-- titre -->
+    <title>Deposer votre annonce</title>
+
+    <!-- DEBUT -->
 </head>
+
 <body>
+    <!--  logo -->
+    <br /><br />
+    <div class="container">
+        <div>
+        <img class="img-fluid mx-auto d-block" src="AimsMercato.jpg" alt="logo" width="25%">
+        </div>
+    </div>
+    <br />
 
+    <!-- formulaire -->
 
-    <form action="" method="POST" enctype="multipart/form-data">
+    <div class="container">
+        <div class="card border-5 shadow my-5 bg-primary">
+            <div class="card-body p-5">
+                <div class="text-center formfield-select--container::after">
+                    <form action="creation.php" method="POST" enctype="multipart/form-data" >
                         <br />
-                        <input type="hidden" name="id" value=<?=$id?>>
 
-                        <label>nom</label><br>
-                        <input type="text" name="nom" placeholder="nom" required pattern="[A-Za-z]{2,20}" maxlength="20" value=<?=$nom?>><br>
-                        
-                        <label>nationalité</label><br />
-                        <select name="nationalite" required value=<?=$nationalite?>>
+                        <label><h3>nom</h3></label><br />
+                        <input type="text" name="nom" placeholder="nom" required pattern="[A-Za-z]{2,20}" maxlength="20" /><br /><br />
+
+                        <label><h3>nationalité</h3></label><br />
+
+                        <select name="nationalite"  required>
                             <option value="">choisie ta nationalite</option>
                             <optgroup label="Europe">
-                                <option value="france">France</option>
+                                <option value="angleterre">Angleterre</option>
                                 <option value="belgique">Belgique</option>
+                                <option value="espagne">Espagne</option>
+                                <option value="france">France</option>
+                                <option value="portugal">Portugal</option>
                                 <option value="suisse">Suisse</option>
                             </optgroup>
                             <optgroup label="Afrique">
-                                <option value="maroc">Maroc</option>
                                 <option value="algerie">Algérie</option>
-                                <option value="tunisie">Tunisie</option>
-                                <option value="madagascar">Madagascar</option>
                                 <option value="benin">Bénin</option>
-                                <option value="togo">Togo</option>
+                                <option value="egypte">Egypte</option>
+                                <option value="maroc">Maroc</option>
+                                <option value="senegal">Senegal</option>
+                                <option value="tunisie">Tunisie</option>
                             </optgroup>
                             <optgroup label="Amerique">
+                                <option value="argentine">Argentine</option>
+                                <option value="bresil">Bresil</option>
                                 <option value="canada">Canada</option>
+                                <option value="colombie">Colombie</option>
                             </optgroup>
-                        </select><br />
+                        </select><br /><br />
 
-                        <label>age</label><br />
-                        <select name="age" required value=<?=$age?>>
+                        <label><h3>age</h3></label><br />
+                        <select name="age" required>
                             <option value="">indique ton age</option>
                             <!-- <option value="0">0</option>
                             <option value="1">1</option>
@@ -176,11 +171,10 @@ else
                             <option value="98">98</option>
                             <option value="99">99</option>
                             <option value="100">100</option> -->
-                        </select><br>
+                        </select><br /><br />
 
-
-                        <label>poste</label><br>
-                        <select name="poste" required value=<?=$poste?>>
+                        <label><h3>poste</h3></label><br />
+                        <select name="poste" required>
                             <option value="">choisie ton poste</option>
                             <optgroup label="attaquant">
                                 <option value="buteur">buteur</option>
@@ -195,21 +189,32 @@ else
                                 <option value="defenseur droit">defenseur droit</option>
                                 <option value="defenseur gauche">defenseur gauche</option>
                             </optgroup>
-                            <optgroup label="defenseur">
+                            <optgroup label="gardien">
                                 <option value="gardien de but">gardien de but</option>
                             </optgroup>
-                        </select><br />
+                        </select><br /><br />
 
-                        <label>email</label><br />
-                        <input type="email" name="email" placeholder="email@" required value=<?=$email?>/><br />
+                        <label><h3>email</h3></label><br />
+                        <input type="email" name="email" placeholder="email@" required /><br /><br />
 
-                        <label>photo</label><br />
-                        <input name="photo" type="file" value=<?=$photo?>/>
+                        <label><h3>photo</h3></label><br /><br />
+                        <input name="photo" type="file" multiple="oui"/>
 
-                        <input type="submit" value="MAJ" name="submit" />
-
+                        <input type="submit" value="enregistrer" name="submit" />
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <?php  echo "/***********************************************************************************************************/";?>
+    <div class="container">
+        <div class="text-center">
+            <a type="button" class="btn btn-primary me-md-2" data-toggle="button" aria-pressed="false" autocomplete="off" style="font-size: 30px" href="index.php">Retourner au site</a>
+        </div>
+    </div>
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+
 </html>

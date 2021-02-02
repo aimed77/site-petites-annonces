@@ -1,0 +1,99 @@
+test pour email
+
+
+<?php
+
+require_once('connexiondb.php');
+$alert = '';
+session_start();
+# si la session est active, redirection à page principal
+if (!empty($_SESSION['active'])) {
+    header('location : index.php');
+} else {
+    if (!empty($_POST)) {
+        #extract($_POST);
+        #$valid = (boolean) true;
+
+        // var_dump($_POST);
+        if (!empty($_POST['nom']) && !empty($_POST['nationalite']) && !empty($_POST['age']) && !empty($_POST['poste']) && !empty($_POST['email'])) {
+            
+            $dest = $_POST['email'];
+            $sujet = "Validation de votre inscription";
+            $message ='<!DOCTYPE html>
+                <html lang="fr">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Document</title>
+                </head>
+                <body>
+                <a href="http://localhost/petites_annonces/view/php/index.php'.$dest.'" target="_blank">Cliquez ici pour valider votrer compte <a/> 
+                </body>
+                </html>';
+
+            
+            // $message = "Felicitation votre inscription est un succes, pour valider votre compte cliquez sur le lien <a href=valid.php?status=1> clique ici <a/>";
+            $headers="MIME-Version: 1.0\r\n";
+            $headers = "From: leban.aimed@gmail.com";
+            $headers.='Content-Type:text/html; charset=\"iso-8859-1\"';
+            // $headers.="Content-Type:text/html; charset=\"iso-8859-1\"";
+            // $headers.='Content-Type:text/html; charset="UTF-8"'."\n";
+            // $headers.='Content-Transfer-Encoding: 8bit';
+
+            
+
+        
+
+        mail($dest, $sujet, $message, $headers);
+            $pseudo = htmlentities($_POST['nom']);
+            $mail = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+            // $password = md5($_POST['password']);
+            // $jour=  $jour;
+            // $mois=  $mois;
+            // $annee=  $annee;
+            // $_SESSION['identifiant'] = time() . $pseudo;
+            // $departement = htmlentities($_POST['departement']);
+            // $date_naissance=  null;
+
+            $DB = new ConnexionDB;
+            $BDD = $DB->connexion();
+
+            $req = $BDD->prepare("INSERT INTO test (nom, nationalite, age, poste, email) VALUES (:nom, :nationalite, :age, :poste, :email)");
+            # si 
+            if ($req->execute(array($nom,$nationalite,$age,$poste,$email))) {
+
+                header('location: index.php');
+            }
+        } else {
+            $alert = 'Verifiez que vos donnes sont correct';
+        }
+    }
+}
+
+ 
+
+?>
+
+
+
+
+
+
+$image = "src=AimsMercato.jpg";
+
+<a href="description.php?id=<?= $article['id'] ?>"><img class="card-img-top" <?= $image?> alt="img"
+                            width="30%"></a>
+
+                                            <a href="description.php?id=<?= $article['id'] ?>"><img class="card-img-top" <?= $article['photo'] ?> alt="img"
+                            width="30%"></a>
+
+
+
+
+                            <!-- <?
+    if (file_exists($cle['photo'])) {
+        echo '<img src="'.$cle['photo'].'" alt="ok" />';
+    } else {
+        echo '<img src="'.$image.'" alt="non" />';
+    }
+            ?>  -->

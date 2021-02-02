@@ -1,48 +1,28 @@
+<?php
+$image = "<img src=AimsMercato.jpg width=200 height=200 alt=image>";
+require_once('database.php');
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- font awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <!-- mon css -->
-    <link href="../css/css.css" rel="stylesheet" />
-    <!-- titre -->
-    <title>Deposer votre annonce</title>
-
-    <!-- DEBUT -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire saisie de data</title>
 </head>
 
 <body>
-    <!--  logo -->
-    <br><br>
-    <div class="container">
-        <div>
-            <img class="img-fluid mx-auto d-block" src="../img/AimsMercato.jpg" alt="logo" width="25%" />
-        </div>
-    </div>
-    <br />
 
-    <!-- formulaire -->
+<h1></h1>
 
-    <div class="container">
-        <div class="card border-5 shadow my-5 bg-primary">
-            <div class="card-body p-5">
-                <div class="text-center">
-                    <form action="../php/creation.php" method="POST" enctype="multipart/form-data">
+    <form action="creation.php" method="POST" enctype="multipart/form-data">
                         <br />
 
                         <label>nom</label><br>
-                        <input type="text" name="nom" placeholder="nom" required pattern="[A-Za-z]{2,20}"
-                            maxlength="20"><br><br>
-
+                        <input type="text" name="nom" placeholder="nom" required pattern="[A-Za-z]{2,20}" maxlength="20" ><br>
+                        
                         <label>nationalité</label><br />
-                        <select name="nationalite" required>
+                        <select name="nationalite" required >
                             <option value="">choisie ta nationalite</option>
                             <optgroup label="Europe">
                                 <option value="france">France</option>
@@ -60,10 +40,10 @@
                             <optgroup label="Amerique">
                                 <option value="canada">Canada</option>
                             </optgroup>
-                        </select><br /><br>
+                        </select><br />
 
                         <label>age</label><br />
-                        <select name="age" required>
+                        <select name="age" required >
                             <option value="">indique ton age</option>
                             <!-- <option value="0">0</option>
                             <option value="1">1</option>
@@ -166,11 +146,11 @@
                             <option value="98">98</option>
                             <option value="99">99</option>
                             <option value="100">100</option> -->
-                        </select><br><br>
+                        </select><br>
 
 
                         <label>poste</label><br>
-                        <select name="poste" required>
+                        <select name="poste" required >
                             <option value="">choisie ton poste</option>
                             <optgroup label="attaquant">
                                 <option value="buteur">buteur</option>
@@ -188,28 +168,40 @@
                             <optgroup label="defenseur">
                                 <option value="gardien de but">gardien de but</option>
                             </optgroup>
-                        </select><br /><br>
+                        </select><br />
 
                         <label>email</label><br />
-                        <input type="email" name="email" placeholder="email@" required /><br /><br>
+                        <input type="email" name="email" placeholder="email@" required /><br />
 
-                        <label>photo</label><br /><br>
+                        <label>photo</label><br />
                         <input name="photo" type="file" />
 
                         <input type="submit" value="enregistrer" name="submit" />
 
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
+    <?php
+    echo "<br><br><br><br>";
+    $users = readUsers();
+    foreach ($users as $value) {
+        echo "<a href='supprimer.php?id=" . $value['id'] . "'>Supprimer</a>";
+        echo "<br>" . $value['nom'];
+        echo "<br>" . $value['nationalite'];
+        echo "<br>" . $value['age'];
+        echo "<br>" . $value['poste'];
+        echo "<br>" . $value['email'] . "<br>";
+        if (file_exists($value['photo'])) {
+            echo "<br>" . $value['photo'] . "<a href='maj.php?id=" . $value['id'] . "&nom=" . $value['nom'] . "&nationalite=" . $value['nationalite'] . "&age=" . $value['age'] . "&poste=" . $value['poste'] . "&email=" . $value['email'] . "&photo=" . $value['photo'] . "&id=" . $value['id'] . "' >
+               <img src=" . $value['photo'] . " width=400 height=400 alt=image> </a>";
+            echo "<br><br><br><br><br><br>";
+        } else {
+            echo "<br>" . $value['photo'] . "<a href='maj.php?id=" . $value['id'] . "&nom=" . $value['nom'] . "&nationalite=" . $value['nationalite'] . "&age=" . $value['age'] . "&poste=" . $value['poste'] . "&email=" . $value['email'] . "&photo=" . $value['photo'] . "&id=" . $value['id'] . "' >
+                " . $image . " </a>";
+            echo "<br><br><br><br><br><br>";
+        }
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
-    integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU"
-    crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"
-    integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj"
-    crossorigin="anonymous"></script>
+    }
+
+    ?>
+</body>
 
 </html>

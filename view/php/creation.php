@@ -22,6 +22,6 @@ $photo = $filename;
 
 // $pdo = getPdo();
 createUser($nom, $nationalite, $age, $poste, $email, $photo);
-header("Location:../html/validation.html");
+header("Location:validation.php");
 // $lastUser = readLastUser();
 // print_r($lastUser);

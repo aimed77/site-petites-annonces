@@ -1,206 +1,162 @@
 <?php
-$image = "<img src=../img/AimsMercato.jpg width=200 height=200 alt=image>";
-require_once('database.php');
+// On détermine sur quelle page on se trouve
+if(isset($_GET['page']) && !empty($_GET['page'])){
+    $currentPage = (int) strip_tags($_GET['page']);
+}else{
+    $currentPage = 1;
+}
+// On se connecte à là base de données
+require_once('connexiondb.php');
+
+// On détermine le nombre total d'articles
+$sql = 'SELECT COUNT(*) AS nb_articles FROM `test`;';
+
+// On prépare la requête
+$query = $BDD->prepare($sql);
+
+// On exécute
+$query->execute();
+
+// On récupère le nombre d'articles
+$result = $query->fetch();
+
+$nbArticles = (int) $result['nb_articles'];
+
+// On détermine le nombre d'articles par page
+$parPage = 10;
+
+// On calcule le nombre de pages total
+$pages = ceil($nbArticles / $parPage);
+
+// Calcul du 1er article de la page
+$premier = ($currentPage * $parPage) - $parPage;
+
+$sql = 'SELECT * FROM `test` ORDER BY `id` DESC LIMIT :premier, :parpage;';
+
+// On prépare la requête
+$query = $BDD->prepare($sql);
+
+$query->bindValue(':premier', $premier, PDO::PARAM_INT);
+$query->bindValue(':parpage', $parPage, PDO::PARAM_INT);
+
+// On exécute
+$query->execute();
+
+// On récupère les valeurs dans un tableau associatif
+$articles = $query->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire saisie de data</title>
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- mon css -->
+    <link href="../css/css.css" rel="stylesheet">
+    <!-- titre -->
+    <title>AimsMercato</title>
+
+    <!-- DEBUT -->
 </head>
 
 <body>
 
-<h1></h1>
-
-    <form action="creation.php" method="POST" enctype="multipart/form-data">
-                        <br />
-
-                        <label>nom</label><br>
-                        <input type="text" name="nom" placeholder="nom" required pattern="[A-Za-z]{2,20}" maxlength="20" ><br>
-                        
-                        <label>nationalité</label><br />
-                        <select name="nationalite" required >
-                            <option value="">choisie ta nationalite</option>
-                            <optgroup label="Europe">
-                                <option value="france">France</option>
-                                <option value="belgique">Belgique</option>
-                                <option value="suisse">Suisse</option>
-                            </optgroup>
-                            <optgroup label="Afrique">
-                                <option value="maroc">Maroc</option>
-                                <option value="algerie">Algérie</option>
-                                <option value="tunisie">Tunisie</option>
-                                <option value="madagascar">Madagascar</option>
-                                <option value="benin">Bénin</option>
-                                <option value="togo">Togo</option>
-                            </optgroup>
-                            <optgroup label="Amerique">
-                                <option value="canada">Canada</option>
-                            </optgroup>
-                        </select><br />
-
-                        <label>age</label><br />
-                        <select name="age" required >
-                            <option value="">indique ton age</option>
-                            <!-- <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                            <option value="13">13</option> -->
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                            <option value="20">20</option>
-                            <option value="21">21</option>
-                            <option value="22">22</option>
-                            <option value="23">23</option>
-                            <option value="24">24</option>
-                            <option value="25">25</option>
-                            <option value="26">26</option>
-                            <option value="27">27</option>
-                            <option value="28">28</option>
-                            <option value="29">29</option>
-                            <option value="30">30</option>
-                            <option value="31">31</option>
-                            <option value="32">32</option>
-                            <option value="33">33</option>
-                            <option value="34">34</option>
-                            <option value="35">35</option>
-                            <option value="36">36</option>
-                            <option value="37">37</option>
-                            <option value="38">38</option>
-                            <option value="39">39</option>
-                            <option value="40">40</option>
-                            <option value="41">41</option>
-                            <option value="42">42</option>
-                            <option value="43">43</option>
-                            <option value="44">44</option>
-                            <option value="45">45</option>
-                            <option value="46">46</option>
-                            <option value="47">47</option>
-                            <option value="48">48</option>
-                            <option value="49">49</option>
-                            <!-- <option value="50">50</option>
-                            <option value="51">51</option>
-                            <option value="52">52</option>
-                            <option value="53">53</option>
-                            <option value="54">54</option>
-                            <option value="55">55</option>
-                            <option value="56">56</option>
-                            <option value="57">57</option>
-                            <option value="58">58</option>
-                            <option value="59">59</option>
-                            <option value="60">60</option>
-                            <option value="61">61</option>
-                            <option value="62">62</option>
-                            <option value="63">63</option>
-                            <option value="64">64</option>
-                            <option value="65">65</option>
-                            <option value="66">66</option>
-                            <option value="67">67</option>
-                            <option value="68">68</option>
-                            <option value="69">69</option>
-                            <option value="70">70</option>
-                            <option value="71">71</option>
-                            <option value="72">72</option>
-                            <option value="73">73</option>
-                            <option value="74">74</option>
-                            <option value="75">75</option>
-                            <option value="76">76</option>
-                            <option value="77">77</option>
-                            <option value="78">78</option>
-                            <option value="79">79</option>
-                            <option value="80">80</option>
-                            <option value="81">81</option>
-                            <option value="82">82</option>
-                            <option value="83">83</option>
-                            <option value="84">84</option>
-                            <option value="85">85</option>
-                            <option value="86">86</option>
-                            <option value="87">87</option>
-                            <option value="88">88</option>
-                            <option value="89">89</option>
-                            <option value="90">90</option>
-                            <option value="91">91</option>
-                            <option value="92">92</option>
-                            <option value="93">93</option>
-                            <option value="94">94</option>
-                            <option value="95">95</option>
-                            <option value="96">96</option>
-                            <option value="97">97</option>
-                            <option value="98">98</option>
-                            <option value="99">99</option>
-                            <option value="100">100</option> -->
-                        </select><br>
+    <!-- Annonce + logo -->
+    <br><br>
+    <div class="container ">
+        <div>
+            <img class="img-fluid mx-auto d-block" src="AimsMercato.jpg" alt="logo" width="25%">
+        </div>
+        <hr> <br>
+        <div class=" text-center ">
+            <a type="button" class="btn btn-success me-md-2" data-toggle="button" aria-pressed="false"
+                autocomplete="off" style="font-size: 40px;" href="deposer.php">Deposer votre
+                Annonce</a>
+        </div>
+    </div>
+    <br> <br> <br>
 
 
-                        <label>poste</label><br>
-                        <select name="poste" required >
-                            <option value="">choisie ton poste</option>
-                            <optgroup label="attaquant">
-                                <option value="buteur">buteur</option>
-                                <option value="ailier">ailier</option>
-                            </optgroup>
-                            <optgroup label="milieu">
-                                <option value="milieu defensif">milieu defensif</option>
-                                <option value="milieu offensif">milieu offensif</option>
-                            </optgroup>
-                            <optgroup label="defenseur">
-                                <option value="defenseur central">defenseur central</option>
-                                <option value="defenseur droit">defenseur droit</option>
-                                <option value="defenseur gauche">defenseur gauche</option>
-                            </optgroup>
-                            <optgroup label="defenseur">
-                                <option value="gardien de but">gardien de but</option>
-                            </optgroup>
-                        </select><br />
+    <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-                        <label>email</label><br />
-                        <input type="email" name="email" placeholder="email@" required /><br />
+    <!-- Mini Header 1 -->
+    <div class="container ">
 
-                        <label>photo</label><br />
-                        <input name="photo" type="file" />
+        <div class="row">
+            <?php
+          foreach ($articles as $article){
+          ?>
+            <div class="col-sm-6 espacement">
+                <div class="card h-100">
 
-                        <input type="submit" value="enregistrer" name="submit" />
 
-                    </form>
-    <?php
-    echo "<br><br><br><br>";
-     $users = readUsers();
-$users2 = array_reverse($users);
-        foreach ($users2 as $cle => $value) {
-            echo "<a href='supprimer.php?id=".$value['id']."'>Supprimer</a>";
-            echo "<br>".$value['nom'];
-            echo "<br>".$value['nationalite'];
-            echo "<br>".$value['age'];
-            echo "<br>".$value['poste'];
-            echo "<br>".$value['email']."<br>";
-            if (file_exists($value['photo'])){
-                echo "<br>".$value['nom']."<a href='maj.php?id=".$value['id']."&nom=".$value['nom']."&nationalite=".$value['nationalite']."&age=".$value['age']."&poste=".$value['poste']."&email=".$value['email']."&photo=".$value['photo']."&id=".$value['id']."' >
-               <img src=".$value['photo']." width=400 height=400 alt=image> </a>";
-            echo "<br><br><br><br><br><br>";
-            }else {echo "<br>".$value['nom']."<a href='maj.php?id=".$value['id']."&nom=".$value['nom']."&nationalite=".$value['nationalite']."&age=".$value['age']."&poste=".$value['poste']."&email=".$value['email']."&photo=".$value['photo']."&id=".$value['id']."' >
-                ".$image. " </a>";
-             echo "<br><br><br><br><br><br>";}
+                    <a href="description.php?id=<?= $article['id'] ?>"><img class="card-img-top" src="<?= $article['photo'] ?>" alt=""
+                            width="30%"></a>
 
-    }
 
-    ?>
+                    <div class="card-body">
+                        <h2 class="card-title text-center">
+                            <?= $article['nom'] ?> <br>
+                            <?= $article['poste'] ?>
+                        </h2>
+                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam
+                            aspernatur eum quasi sapiente nesciunt? Voluptatibus sit, repellat sequi itaque deserunt,
+                            dolores in, nesciunt, illum tempora ex quae? Nihil, dolorem!</p>
+                    </div>
+                </div>
+            </div>
+            <?php
+          }
+          ?>
+        </div>
+    </div>
+
+
+    <br> <br>
+
+
+
+    <!-- Pagination -->
+
+    <nav>
+    <ul class="pagination justify-content-center">
+        <!-- Lien vers la page précédente (désactivé si on se trouve sur la 1ère page) -->
+        <li class="page-item <?= ($currentPage == 1) ? "disabled" : "" ?>">
+            <a href="./?page=<?= $currentPage - 1 ?>" class="page-link">Précédente</a>
+        </li>
+        <?php for($page = 1; $page <= $pages; $page++): ?>
+            <!-- Lien vers chacune des pages (activé si on se trouve sur la page correspondante) -->
+            <li class="page-item <?= ($currentPage == $page) ? "active" : "" ?>">
+                <a href="./?page=<?= $page ?>" class="page-link"><?= $page ?></a>
+            </li>
+        <?php endfor ?>
+            <!-- Lien vers la page suivante (désactivé si on se trouve sur la dernière page) -->
+            <li class="page-item <?= ($currentPage == $pages) ? "disabled" : "" ?>">
+            <a href="./?page=<?= $currentPage + 1 ?>" class="page-link">Suivante</a>
+        </li>
+    </ul>
+</nav>
+
+
 </body>
 
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+    integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"
+    integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj"
+    crossorigin="anonymous"></script>
+
 </html>
+
+
+
+

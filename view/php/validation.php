@@ -43,7 +43,7 @@
     <div class="container">
         <div class=" text-center ">
             <a type="button" class="btn btn-primary me-md-2" data-toggle="button" aria-pressed="false"
-                autocomplete="off" style="font-size: 30px;" href="index.html">Retourner au site</a>
+                autocomplete="off" style="font-size: 30px;" href="index.php">Retourner au site</a>
         </div>
     </div>
 
