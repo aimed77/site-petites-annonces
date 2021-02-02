@@ -1,5 +1,14 @@
 <?php
+require_once('connexiondb.php');
 
-require_once('database.php');
-$id = $_GET['id'];
-deleteUser($id);
+if(isset($_GET['id']) && !empty($_GET['id'])){
+    $id = strip_tags($_GET['id']);
+    $sql = "DELETE FROM `test` WHERE `id`=:id;";
+
+    $query = $BDD->prepare($sql);
+
+    $query->bindValue(':id', $id, PDO::PARAM_INT);
+    $query->execute();
+
+    header('Location: test.php');
+}

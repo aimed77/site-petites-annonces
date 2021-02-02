@@ -1,79 +1,98 @@
 <?php
-require_once('database.php');
-// reception des variables POST du formulaire
-$id = trim($_GET['id']);
-$nom = $_GET['nom'];
-$nationalite = $_GET['nationalite'];
-$age = $_GET['age'];
-$poste = $_GET['poste'];
-$email = $_GET['email'];
-$photo = $_GET['photo'];
-/***************************************************** */
-@$uploaddir = 'photo/../';
-@$uploadfile = $uploaddir . basename($_FILES['photo']['name']);
-echo '<pre>';
-move_uploaded_file(@$_FILES['photo']['tmp_name'], @$uploadfile);
-/****************************************************** */
-// si id est define & est un numeric dans _POST
-if (isset( $_POST['id'] ) && is_numeric( $_POST['id'] ) )
-   {
-    $id = $_POST['id'];
-    $nom = $_POST['nom'];
-    $nationalite = $_POST['nationalite'];
-    $age = $_POST['age'];
-    $poste = $_POST['poste'];
-    $email = $_POST['email'];
-    $photo = $uploadfile;
-    updateUser($nom, $nationalite, $age, $poste, $email, $photo, $id);
-    header('Location:index_prive.php');
-} 
-else
-    echo "/***********************************************************************************************************/";
+require_once('connexiondb.php');
 
- $majUser = readLastUser();
- print_r($majUser.'<br>');
- 
+if(isset($_POST)){
+    if(isset($_POST['id']) && !empty($_POST['id'])
+        && isset($_POST['nom']) && !empty($_POST['nom'])
+        && isset($_POST['age']) && !empty($_POST['age'])
+        && isset($_POST['nationalite']) && !empty($_POST['nationalite'])
+        && isset($_POST['poste']) && !empty($_POST['poste'])
+        && isset($_POST['email']) && !empty($_POST['email'])
+        // && isset($_POST['photo']) && !empty($_POST['photo'])
+        ){
+        $id = strip_tags($_GET['id']);
+        $nom = strip_tags($_POST['nom']);
+        $age = strip_tags($_POST['age']);
+        $nationalite = strip_tags($_POST['nationalite']);
+        $poste = strip_tags($_POST['poste']);
+        $email = strip_tags($_POST['email']);
+        // $photo = strip_tags($_POST['photo']);
+
+            $sql = "INSERT INTO test (nom, nationalite, age, poste, email, photo) VALUES (:nom, :nationalite, :age, :poste, :email, :photo);";
+
+            $query = $BDD->prepare($sql);
+
+            $query->bindValue(':nom', $nom, PDO::PARAM_STR);
+            $query->bindValue(':age', $age, PDO::PARAM_STR);
+            $query->bindValue(':nationalite', $nationalite, PDO::PARAM_STR);
+            $query->bindValue(':poste', $poste, PDO::PARAM_STR);
+            $query->bindValue(':email', $email, PDO::PARAM_STR);
+            // $query->bindValue(':photo', $photo, PDO::PARAM_STR);
+            $query->bindValue(':id', $id, PDO::PARAM_INT);
+
+            $query->execute();
+            $_SESSION['message'] = "Produit ajouté avec succès !";
+            header('Location: test.php');
+        }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>maj</title>
+    <title>creer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
 </head>
 <body>
-
-
-    <form action="" method="POST" enctype="multipart/form-data">
+<div class="container">
+        <div class="card border-5 shadow my-5 bg-success">
+            <div class="card-body p-5">
+                <div class="text-center ">
+                    <form action="creation.php" method="POST" enctype="multipart/form-data">
                         <br />
-                        <input type="hidden" name="id" value=<?=$id?>>
 
-                        <label>nom</label><br>
-                        <input type="text" name="nom" placeholder="nom" required pattern="[A-Za-z]{2,20}" maxlength="20" value=<?=$nom?>><br>
-                        
-                        <label>nationalité</label><br />
-                        <select name="nationalite" required value=<?=$nationalite?>>
+                        <label>
+                            <h3>nom</h3>
+                        </label><br />
+                        <input type="text" name="nom" placeholder="nom" required pattern="[A-Za-z]{2,20}" maxlength="20" /><br /><br />
+
+                        <label>
+                            <h3>nationalité</h3>
+                        </label><br />
+
+                        <select name="nationalite" required>
                             <option value="">choisie ta nationalite</option>
                             <optgroup label="Europe">
-                                <option value="france">France</option>
+                                <option value="angleterre">Angleterre</option>
                                 <option value="belgique">Belgique</option>
+                                <option value="espagne">Espagne</option>
+                                <option value="france">France</option>
+                                <option value="portugal">Portugal</option>
                                 <option value="suisse">Suisse</option>
                             </optgroup>
                             <optgroup label="Afrique">
-                                <option value="maroc">Maroc</option>
                                 <option value="algerie">Algérie</option>
-                                <option value="tunisie">Tunisie</option>
-                                <option value="madagascar">Madagascar</option>
                                 <option value="benin">Bénin</option>
-                                <option value="togo">Togo</option>
+                                <option value="egypte">Egypte</option>
+                                <option value="maroc">Maroc</option>
+                                <option value="senegal">Senegal</option>
+                                <option value="tunisie">Tunisie</option>
                             </optgroup>
                             <optgroup label="Amerique">
+                                <option value="argentine">Argentine</option>
+                                <option value="bresil">Bresil</option>
                                 <option value="canada">Canada</option>
+                                <option value="colombie">Colombie</option>
                             </optgroup>
-                        </select><br />
+                        </select><br /><br />
 
-                        <label>age</label><br />
-                        <select name="age" required value=<?=$age?>>
+                        <label>
+                            <h3>age</h3>
+                        </label><br />
+                        <select name="age" required>
                             <option value="">indique ton age</option>
                             <!-- <option value="0">0</option>
                             <option value="1">1</option>
@@ -176,11 +195,12 @@ else
                             <option value="98">98</option>
                             <option value="99">99</option>
                             <option value="100">100</option> -->
-                        </select><br>
+                        </select><br /><br />
 
-
-                        <label>poste</label><br>
-                        <select name="poste" required value=<?=$poste?>>
+                        <label>
+                            <h3>poste</h3>
+                        </label><br />
+                        <select name="poste" required>
                             <option value="">choisie ton poste</option>
                             <optgroup label="attaquant">
                                 <option value="buteur">buteur</option>
@@ -195,21 +215,31 @@ else
                                 <option value="defenseur droit">defenseur droit</option>
                                 <option value="defenseur gauche">defenseur gauche</option>
                             </optgroup>
-                            <optgroup label="defenseur">
+                            <optgroup label="gardien">
                                 <option value="gardien de but">gardien de but</option>
                             </optgroup>
-                        </select><br />
+                        </select><br /><br />
 
-                        <label>email</label><br />
-                        <input type="email" name="email" placeholder="email@" required value=<?=$email?>/><br />
+                        <label>
+                            <h3>email</h3>
+                        </label><br />
+                        <input type="email" name="email" placeholder="email@" required /><br /><br />
 
-                        <label>photo</label><br />
-                        <input name="photo" type="file" value=<?=$photo?>/>
+                        <label>
+                            <h3>photo</h3>
+                        </label><br /><br />
+                        <input name="photo" type="file" />
 
-                        <input type="submit" value="MAJ" name="submit" />
-
+                        <input type="submit" value="enregistrer" name="submit" />
                     </form>
-
-    <?php  echo "/***********************************************************************************************************/";?>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
+
+
+
+
+

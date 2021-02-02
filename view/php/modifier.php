@@ -1,48 +1,75 @@
+<?php
+require_once('connexiondb.php');
+
+if(isset($_POST)){
+    if(isset($_POST['id']) && !empty($_POST['id'])
+        && isset($_POST['nom']) && !empty($_POST['nom'])
+        && isset($_POST['age']) && !empty($_POST['age'])
+        && isset($_POST['nationalite']) && !empty($_POST['nationalite'])
+        && isset($_POST['poste']) && !empty($_POST['poste'])
+        && isset($_POST['email']) && !empty($_POST['email'])
+        // && isset($_POST['photo']) && !empty($_POST['photo'])
+        ){
+        $id = strip_tags($_GET['id']);
+        $nom = strip_tags($_POST['nom']);
+        $age = strip_tags($_POST['age']);
+        $nationalite = strip_tags($_POST['nationalite']);
+        $poste = strip_tags($_POST['poste']);
+        $email = strip_tags($_POST['email']);
+        // $photo = strip_tags($_POST['photo']);
+
+
+        $sql = "UPDATE `test` SET `nom`=:nom, `age`=:age, `nationalite`=:nationalite, `poste`=:poste, `email`=:email WHERE `id`=:id;";
+// , `photo`=:photo
+        $query = $BDD->prepare($sql);
+
+        $query->bindValue(':nom', $nom, PDO::PARAM_STR);
+        $query->bindValue(':age', $age, PDO::PARAM_STR);
+        $query->bindValue(':nationalite', $nationalite, PDO::PARAM_STR);
+        $query->bindValue(':poste', $poste, PDO::PARAM_STR);
+        $query->bindValue(':email', $email, PDO::PARAM_STR);
+        // $query->bindValue(':photo', $photo, PDO::PARAM_STR);
+        $query->bindValue(':id', $id, PDO::PARAM_INT);
+
+        $query->execute();
+
+        header('Location: test.php');
+    }
+}
+
+if(isset($_GET['id']) && !empty($_GET['id'])){
+    $id = strip_tags($_GET['id']);
+    $sql = "SELECT * FROM `test` WHERE `id`=:id;";
+
+    $query = $BDD->prepare($sql);
+
+    $query->bindValue(':id', $id, PDO::PARAM_INT);
+    $query->execute();
+
+    $result = $query->fetch();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modif : <?= $result['nom'] ?></title>
 
-    <!-- bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
-    <!-- font awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <!-- mon css -->
-    <link href="../css/css.css" rel="stylesheet" />
-    <!-- titre -->
-    <title>Deposer votre annonce</title>
-
-    <!-- DEBUT -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
-
 <body>
-    <!--  logo -->
-    <br /><br />
-    <div class="container">
-        <div>
-        <img class="img-fluid mx-auto d-block" src="AimsMercato.jpg" alt="logo" width="25%">
-        </div>
-    </div>
-    <br />
+<h1>Modifier ce Joueur : <?= $result['nom'] ?></h1>
+    <form action="" method="POST" enctype="multipart/form-data">
+        <br />
 
-    <!-- formulaire -->
-
-    <div class="container">
-        <div class="card border-5 shadow my-5 bg-primary">
-            <div class="card-body p-5">
-                <div class="text-center formfield-select--container::after">
-                    <form action="creation.php" method="POST" enctype="multipart/form-data" >
-                        <br />
-
-                        <label><h3>nom</h3></label><br />
-                        <input type="text" name="nom" placeholder="nom" required pattern="[A-Za-z]{2,20}" maxlength="20" /><br /><br />
-
-                        <label><h3>nationalité</h3></label><br />
-
-                        <select name="nationalite"  required>
-                            <option value="">choisie ta nationalite</option>
+        <label>nom</label><br>
+        <input id="nom" type="text" name="nom" placeholder="nom" required pattern="[A-Za-z]{2,20}" maxlength="20" value="<?= $result['nom'] ?>"><br>
+        <br />
+        <label>nationalité</label><br />
+        <select id="nationalite" name="nationalite" required value="<?= $result['nationalite'] ?>">
+        <option value="">choisie ta nationalite</option>
                             <optgroup label="Europe">
                                 <option value="angleterre">Angleterre</option>
                                 <option value="belgique">Belgique</option>
@@ -67,10 +94,10 @@
                             </optgroup>
                         </select><br /><br />
 
-                        <label><h3>age</h3></label><br />
-                        <select name="age" required>
-                            <option value="">indique ton age</option>
-                            <!-- <option value="0">0</option>
+        <label>age</label><br />
+        <select id="age" name="age" required value="<?= $result['age'] ?>">
+            <option value="">indique ton age</option>
+            <!-- <option value="0">0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -84,43 +111,43 @@
                             <option value="11">11</option>
                             <option value="12">12</option>
                             <option value="13">13</option> -->
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                            <option value="20">20</option>
-                            <option value="21">21</option>
-                            <option value="22">22</option>
-                            <option value="23">23</option>
-                            <option value="24">24</option>
-                            <option value="25">25</option>
-                            <option value="26">26</option>
-                            <option value="27">27</option>
-                            <option value="28">28</option>
-                            <option value="29">29</option>
-                            <option value="30">30</option>
-                            <option value="31">31</option>
-                            <option value="32">32</option>
-                            <option value="33">33</option>
-                            <option value="34">34</option>
-                            <option value="35">35</option>
-                            <option value="36">36</option>
-                            <option value="37">37</option>
-                            <option value="38">38</option>
-                            <option value="39">39</option>
-                            <option value="40">40</option>
-                            <option value="41">41</option>
-                            <option value="42">42</option>
-                            <option value="43">43</option>
-                            <option value="44">44</option>
-                            <option value="45">45</option>
-                            <option value="46">46</option>
-                            <option value="47">47</option>
-                            <option value="48">48</option>
-                            <option value="49">49</option>
-                            <!-- <option value="50">50</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+            <option value="32">32</option>
+            <option value="33">33</option>
+            <option value="34">34</option>
+            <option value="35">35</option>
+            <option value="36">36</option>
+            <option value="37">37</option>
+            <option value="38">38</option>
+            <option value="39">39</option>
+            <option value="40">40</option>
+            <option value="41">41</option>
+            <option value="42">42</option>
+            <option value="43">43</option>
+            <option value="44">44</option>
+            <option value="45">45</option>
+            <option value="46">46</option>
+            <option value="47">47</option>
+            <option value="48">48</option>
+            <option value="49">49</option>
+            <!-- <option value="50">50</option>
                             <option value="51">51</option>
                             <option value="52">52</option>
                             <option value="53">53</option>
@@ -171,11 +198,11 @@
                             <option value="98">98</option>
                             <option value="99">99</option>
                             <option value="100">100</option> -->
-                        </select><br /><br />
+        </select><br><br />
 
-                        <label><h3>poste</h3></label><br />
-                        <select name="poste" required>
-                            <option value="">choisie ton poste</option>
+        <label>poste</label><br>
+        <select id="poste" name="poste" required value="<?= $result['poste'] ?>">
+        <option value="">choisie ton poste</option>
                             <optgroup label="attaquant">
                                 <option value="buteur">buteur</option>
                                 <option value="ailier">ailier</option>
@@ -194,27 +221,17 @@
                             </optgroup>
                         </select><br /><br />
 
-                        <label><h3>email</h3></label><br />
-                        <input type="email" name="email" placeholder="email@" required /><br /><br />
+        <label>email</label><br />
+        <input id="email" type="email" name="email" placeholder="email@" required value="<?= $result['email'] ?>" /><br />
+        <br />
+        <label>photo</label><br />
+        <input id="photo" name="photo" type="file" value="<?= $result['photo'] ?>" /><br />
+        <br />
+        <p>
+            <button>Enregistrer</button>
+        </p>
+        <input type="hidden" name="id" value="<?= $result['id'] ?>">
 
-                        <label><h3>photo</h3></label><br /><br />
-                        <input name="photo" type="file" />
-
-                        <input type="submit" value="enregistrer" name="submit" />
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="text-center">
-            <a type="button" class="btn btn-primary me-md-2" data-toggle="button" aria-pressed="false" autocomplete="off" style="font-size: 30px" href="index.php">Retourner au site</a>
-        </div>
-    </div>
+    </form>
 </body>
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
-
 </html>
