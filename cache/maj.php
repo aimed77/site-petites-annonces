@@ -201,7 +201,7 @@ else
                         </select><br />
 
                         <label>email</label><br />
-                        <input type="email" name="email" placeholder="email@" required value=<?=$email?>/><br />
+                        <input type="email" name="email" placeholder="email@" required value=<?=$email?>><br />
 
                         <label>photo</label><br />
                         <input name="photo" type="file" value=<?=$photo?>/>

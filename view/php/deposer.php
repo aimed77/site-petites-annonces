@@ -32,7 +32,7 @@
     <div class="container">
         <div class="card border-5 shadow my-5 bg-primary">
             <div class="card-body p-5">
-                <div class="text-center formfield-select--container::after">
+                <div class="text-center">
                     <form action="creation.php" method="POST" enctype="multipart/form-data" >
                         <br />
 
@@ -209,9 +209,10 @@
 
     <div class="container">
         <div class="text-center">
-            <a type="button" class="btn btn-primary me-md-2" data-toggle="button" aria-pressed="false" autocomplete="off" style="font-size: 30px" href="index.php">Retourner au site</a>
+            <a type="button" class="btn btn-primary me-md-2" data-toggle="button" aria-pressed="false" autocomplete="off" style="font-size: 40px" href="index.php">Retour</a>
         </div>
     </div>
+    <br>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>

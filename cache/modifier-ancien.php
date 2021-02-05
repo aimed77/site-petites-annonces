@@ -1,6 +1,33 @@
 <?php
-require_once('database.php');
 require_once('connexiondb.php');
+
+// afficher 
+
+if(isset($_GET['id']) && !empty($_GET['id'])){
+    $id = strip_tags($_GET['id']);
+    // On écrit notre requête
+    $sql = 'SELECT * FROM `test` WHERE `id`=:id';
+
+    // On prépare la requête
+    $query = $BDD->prepare($sql);
+
+    // On attache les valeurs
+    $query->bindValue(':id', $id, PDO::PARAM_INT);
+
+    // On exécute la requête
+    $query->execute();
+
+    // On stocke le résultat dans un tableau associatif
+    $produit = $query->fetch();
+
+    if(!$produit){
+        header('Location: index.php');
+    }
+}else{
+    header('Location: index.php');
+}
+
+// modifier
 
 if(isset($_POST)){
     if(isset($_POST['id']) && !empty($_POST['id'])
@@ -19,53 +46,73 @@ if(isset($_POST)){
         $email = strip_tags($_POST['email']);
         // $photo = strip_tags($_POST['photo']);
 
-            $sql = "INSERT INTO test (nom, nationalite, age, poste, email, photo) VALUES (:nom, :nationalite, :age, :poste, :email, :photo);";
 
-            $query = $BDD->prepare($sql);
+        $sql = "UPDATE `test` SET `nom`=:nom, `age`=:age, `nationalite`=:nationalite, `poste`=:poste, `email`=:email WHERE `id`=:id;";
+// , `photo`=:photo
+        $query = $BDD->prepare($sql);
 
-            $query->bindValue(':nom', $nom, PDO::PARAM_STR);
-            $query->bindValue(':age', $age, PDO::PARAM_STR);
-            $query->bindValue(':nationalite', $nationalite, PDO::PARAM_STR);
-            $query->bindValue(':poste', $poste, PDO::PARAM_STR);
-            $query->bindValue(':email', $email, PDO::PARAM_STR);
-            // $query->bindValue(':photo', $photo, PDO::PARAM_STR);
-            $query->bindValue(':id', $id, PDO::PARAM_INT);
+        $query->bindValue(':nom', $nom, PDO::PARAM_STR);
+        $query->bindValue(':age', $age, PDO::PARAM_STR);
+        $query->bindValue(':nationalite', $nationalite, PDO::PARAM_STR);
+        $query->bindValue(':poste', $poste, PDO::PARAM_STR);
+        $query->bindValue(':email', $email, PDO::PARAM_STR);
+        // $query->bindValue(':photo', $photo, PDO::PARAM_STR);
+        $query->bindValue(':id', $id, PDO::PARAM_INT);
 
-            $query->execute();
-            $_SESSION['message'] = "Produit ajouté avec succès !";
-            header('Location: test.php');
-        }
+        $query->execute();
+
+        header('Location: test.php');
+    }
+}
+
+if(isset($_GET['id']) && !empty($_GET['id'])){
+    $id = strip_tags($_GET['id']);
+    $sql = "SELECT * FROM `test` WHERE `id`=:id;";
+
+    $query = $BDD->prepare($sql);
+
+    $query->bindValue(':id', $id, PDO::PARAM_INT);
+    $query->execute();
+
+    $result = $query->fetch();
 }
 ?>
+
+<!-- debut -->
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>creer</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+    <title>Modif : <?= $result['nom'] ?></title>
 </head>
 <body>
-<div class="container">
-        <div class="card border-5 shadow my-5 bg-success">
-            <div class="card-body p-5">
-                <div class="text-center ">
-                    <form action="creation.php" method="POST" enctype="multipart/form-data">
-                        <br />
 
-                        <label>
-                            <h3>nom</h3>
-                        </label><br />
-                        <input type="text" name="nom" placeholder="nom" required pattern="[A-Za-z]{2,20}" maxlength="20" /><br /><br />
+<!-- afficher -->
 
-                        <label>
-                            <h3>nationalité</h3>
-                        </label><br />
+<h1>Nom du Joueur : <?= $produit['nom'] ?></h1>
+    <p>ID : <?= $produit['id'] ?></p>
+    <p>poste : <?= $produit['poste'] ?></p>
+    <p>nationalite : <?= $produit['nationalite'] ?></p>
+    <p>age : <?= $produit['age'] ?></p>
+    <p>email : <?= $produit['email'] ?></p>
+    <p>photo : <br> <br> <img src="<?= $produit['photo'] ?>" width="30%"></p>
+    <br><br><br>
 
-                        <select name="nationalite" required>
-                            <option value="">choisie ta nationalite</option>
+<!-- modifier -->
+
+
+<h1>Formulaire pour modifier : <?= $result['nom'] ?></h1>
+    <form action="" method="POST" enctype="multipart/form-data">
+        <br />
+
+        <label>nom</label><br>
+        <input id="nom" type="text" name="nom" placeholder="nom" required pattern="[A-Za-z]{2,20}" maxlength="20" value="<?= $result['nom'] ?>"><br>
+        <br />
+        <label>nationalité</label><br />
+        <select id="nationalite" name="nationalite" required value="<?= $result['nationalite'] ?>">
+        <option value="">choisie ta nationalite</option>
                             <optgroup label="Europe">
                                 <option value="angleterre">Angleterre</option>
                                 <option value="belgique">Belgique</option>
@@ -90,12 +137,10 @@ if(isset($_POST)){
                             </optgroup>
                         </select><br /><br />
 
-                        <label>
-                            <h3>age</h3>
-                        </label><br />
-                        <select name="age" required>
-                            <option value="">indique ton age</option>
-                            <!-- <option value="0">0</option>
+        <label>age</label><br />
+        <select id="age" name="age" required value="<?= $result['age'] ?>">
+            <option value="">indique ton age</option>
+            <!-- <option value="0">0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -109,43 +154,43 @@ if(isset($_POST)){
                             <option value="11">11</option>
                             <option value="12">12</option>
                             <option value="13">13</option> -->
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                            <option value="20">20</option>
-                            <option value="21">21</option>
-                            <option value="22">22</option>
-                            <option value="23">23</option>
-                            <option value="24">24</option>
-                            <option value="25">25</option>
-                            <option value="26">26</option>
-                            <option value="27">27</option>
-                            <option value="28">28</option>
-                            <option value="29">29</option>
-                            <option value="30">30</option>
-                            <option value="31">31</option>
-                            <option value="32">32</option>
-                            <option value="33">33</option>
-                            <option value="34">34</option>
-                            <option value="35">35</option>
-                            <option value="36">36</option>
-                            <option value="37">37</option>
-                            <option value="38">38</option>
-                            <option value="39">39</option>
-                            <option value="40">40</option>
-                            <option value="41">41</option>
-                            <option value="42">42</option>
-                            <option value="43">43</option>
-                            <option value="44">44</option>
-                            <option value="45">45</option>
-                            <option value="46">46</option>
-                            <option value="47">47</option>
-                            <option value="48">48</option>
-                            <option value="49">49</option>
-                            <!-- <option value="50">50</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+            <option value="32">32</option>
+            <option value="33">33</option>
+            <option value="34">34</option>
+            <option value="35">35</option>
+            <option value="36">36</option>
+            <option value="37">37</option>
+            <option value="38">38</option>
+            <option value="39">39</option>
+            <option value="40">40</option>
+            <option value="41">41</option>
+            <option value="42">42</option>
+            <option value="43">43</option>
+            <option value="44">44</option>
+            <option value="45">45</option>
+            <option value="46">46</option>
+            <option value="47">47</option>
+            <option value="48">48</option>
+            <option value="49">49</option>
+            <!-- <option value="50">50</option>
                             <option value="51">51</option>
                             <option value="52">52</option>
                             <option value="53">53</option>
@@ -196,13 +241,11 @@ if(isset($_POST)){
                             <option value="98">98</option>
                             <option value="99">99</option>
                             <option value="100">100</option> -->
-                        </select><br /><br />
+        </select><br><br />
 
-                        <label>
-                            <h3>poste</h3>
-                        </label><br />
-                        <select name="poste" required>
-                            <option value="">choisie ton poste</option>
+        <label>poste</label><br>
+        <select id="poste" name="poste" required value="<?= $result['poste'] ?>">
+        <option value="">choisie ton poste</option>
                             <optgroup label="attaquant">
                                 <option value="buteur">buteur</option>
                                 <option value="ailier">ailier</option>
@@ -221,26 +264,17 @@ if(isset($_POST)){
                             </optgroup>
                         </select><br /><br />
 
-                        <label>
-                            <h3>email</h3>
-                        </label><br />
-                        <input type="email" name="email" placeholder="email@" required /><br /><br />
+        <label>email</label><br />
+        <input id="email" type="email" name="email" placeholder="email@" required value="<?= $result['email'] ?>" /><br />
+        <br />
+        <label>photo</label><br />
+        <input id="photo" name="photo" type="file" value="<?= $result['photo'] ?>" /><br />
+        <br />
+        <p>
+            <button>Enregistrer</button>
+        </p>
+        <input type="hidden" name="id" value="<?= $result['id'] ?>">
 
-                        <label>
-                            <h3>photo</h3>
-                        </label><br /><br />
-                        <input name="photo" type="file" />
-
-                        <input type="submit" value="enregistrer" name="submit" />
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    </form>
 </body>
 </html>
-
-
-
-
-

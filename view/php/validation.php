@@ -22,7 +22,7 @@
     <br><br>
     <div class="container">
         <div>
-            <img class="img-fluid mx-auto d-block" src="../img/AimsMercato.jpg" alt="logo" width="25%" />
+            <img class="img-fluid mx-auto d-block" src="AimsMercato.jpg" alt="logo" width="25%" />
         </div>
         <hr />
     </div>

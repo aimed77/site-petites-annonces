@@ -65,6 +65,32 @@ $articles = $query->fetchAll(PDO::FETCH_ASSOC);
     <title>AimsMercato</title>
 
     <!-- DEBUT -->
+    <style>
+#scrollUp
+{
+position: fixed;
+bottom : 10px;
+right: -100px;
+opacity: 0.5;
+}
+</style>
+ 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+ 
+<script>
+            jQuery(function(){
+                $(function () {
+                    $(window).scroll(function () {
+                        if ($(this).scrollTop() > 200 ) { 
+                            $('#scrollUp').css('right','91%');
+                        } else { 
+                            $('#scrollUp').removeAttr( 'style' );
+                        }
+ 
+                    });
+                });
+            });
+</script>
 </head>
 
 <body>
@@ -78,8 +104,7 @@ $articles = $query->fetchAll(PDO::FETCH_ASSOC);
         <hr> <br>
         <div class=" text-center ">
             <a type="button" class="btn btn-success me-md-2" data-toggle="button" aria-pressed="false"
-                autocomplete="off" style="font-size: 40px;" href="deposer.php">Deposer votre
-                Annonce</a>
+                autocomplete="off" style="font-size: 40px;" href="deposer.php">Mettez votre star en avant ! </a>
         </div>
     </div>
     <br> <br> <br>
@@ -145,6 +170,11 @@ $articles = $query->fetchAll(PDO::FETCH_ASSOC);
     </ul>
 </nav>
 
+<!-- monter en haut de la page -->
+
+<div id="scrollUp">
+<a href="#top"><img src="2top.png"/></a>
+</div>
 
 </body>
 

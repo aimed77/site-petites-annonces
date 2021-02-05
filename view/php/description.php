@@ -37,7 +37,8 @@ if (!isset($voir_utilisateur['id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- font awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- mon css -->
@@ -81,20 +82,29 @@ if (!isset($voir_utilisateur['id'])) {
                     <div class="row">
 
                         <div class="col-md-8">
-                            <img class="img-fluid rounded mx-auto d-block" src="<?= $voir_utilisateur['photo'] ?>" alt="mercato">
+                            <img class="img-fluid rounded mx-auto d-block" src="<?= $voir_utilisateur['photo'] ?>"
+                                alt="mercato">
                         </div>
 
                         <div class="col-md-4">
-                            <h2 class="my-3 text-success">Description Joueur</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio,
-                                gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et,
-                                interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
+                            <h3 class="text-success">Description</h3>
+                            <p>Passeur, dribbleur, technicien hors norme, <?= $voir_utilisateur['nom'] ?> est appelé le
+                                nouveau Pelé. Il est capable d'éliminer ses adversaires
+                                grâce à une bonne maîtrise technique, avec entre autres, de rapides passements de
+                                jambes. Il est tout aussi à l'aise avec son pied gauche que son pied droit
+                                et est capable d'enrouler le ballon avec efficacité.</p>
                             <hr>
-                            <h3 class="my-3 text-success">Caractéristique</h3>
+                            <h3 class="text-success">Caractéristique</h3>
                             <ul class="w3-ul">
-                                <li class="w3-xlarge"><i class="fa fa-futbol-o"></i> <?= $voir_utilisateur['age'] ?>  ans </li>
-                                <li class="w3-xlarge"><i class="fa fa-futbol-o"></i> <?= $voir_utilisateur['nationalite'] ?> </li>
-                                <li class="w3-xlarge"><i class="fa fa-futbol-o"></i> <?= $voir_utilisateur['poste'] ?> </li>
+                                <li class="w3-xlarge"><i class="fa fa-futbol-o"></i>
+                                    <?= $voir_utilisateur['age'] ?> ans
+                                </li>
+                                <li class="w3-xlarge"><i class="fa fa-futbol-o"></i>
+                                    <?= $voir_utilisateur['nationalite'] ?>
+                                </li>
+                                <li class="w3-xlarge"><i class="fa fa-futbol-o"></i>
+                                    <?= $voir_utilisateur['poste'] ?>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -120,25 +130,29 @@ if (!isset($voir_utilisateur['id'])) {
 
                     <div class="col-md-3 col-sm-6 mb-4">
                         <a href="<?= $voir_utilisateur['photo'] ?>">
-                            <img class="img-fluid rounded mx-auto d-block " src="<?= $voir_utilisateur['photo'] ?>" alt="mercato">
+                            <img class="img-fluid rounded mx-auto d-block " src="<?= $voir_utilisateur['photo'] ?>"
+                                alt="mercato">
                         </a>
                     </div>
 
                     <div class="col-md-3 col-sm-6 mb-4">
                         <a href="<?= $voir_utilisateur['photo'] ?>">
-                            <img class="img-fluid rounded mx-auto d-block" src="<?= $voir_utilisateur['photo'] ?>" alt="mercato">
+                            <img class="img-fluid rounded mx-auto d-block" src="<?= $voir_utilisateur['photo'] ?>"
+                                alt="mercato">
                         </a>
                     </div>
 
                     <div class="col-md-3 col-sm-6 mb-4">
                         <a href="<?= $voir_utilisateur['photo'] ?>">
-                            <img class="img-fluid rounded mx-auto d-block " src="<?= $voir_utilisateur['photo'] ?>" alt="mercato">
+                            <img class="img-fluid rounded mx-auto d-block " src="<?= $voir_utilisateur['photo'] ?>"
+                                alt="mercato">
                         </a>
                     </div>
 
                     <div class="col-md-3 col-sm-6 mb-4">
                         <a href="<?= $voir_utilisateur['photo'] ?>">
-                            <img class="img-fluid rounded mx-auto d-block" src="<?= $voir_utilisateur['photo'] ?>" alt="mercato">
+                            <img class="img-fluid rounded mx-auto d-block" src="<?= $voir_utilisateur['photo'] ?>"
+                                alt="mercato">
                         </a>
                     </div>
                     <hr>
@@ -164,17 +178,23 @@ if (!isset($voir_utilisateur['id'])) {
                     <tbody class="text-center ">
                         <tr>
                             <th class="text-success" scope="row">Numero</th>
-                            <td><?= $voir_utilisateur['id'] ?></td>
+                            <td>
+                                <?= $voir_utilisateur['id'] ?>
+                            </td>
 
                         </tr>
                         <tr>
                             <th class="text-success" scope="row">Email</th>
-                            <td><?= $voir_utilisateur['email'] ?></td>
+                            <td>
+                                <?= $voir_utilisateur['email'] ?>
+                            </td>
 
                         </tr>
                         <tr>
                             <th class="text-success" scope="row">Réseaux sociaux</th>
-                            <td><?= $voir_utilisateur['nom'] ?></td>
+                            <td>
+                                <?= $voir_utilisateur['nom'] ?>.7713z
+                            </td>
 
                         </tr>
                     </tbody>
@@ -193,7 +213,8 @@ if (!isset($voir_utilisateur['id'])) {
 
     <div class="container">
         <div class=" text-center ">
-            <a type="button" class="btn btn-primary me-md-2" data-toggle="button" aria-pressed="false" autocomplete="off" style="font-size: 40px;" href="index.php">Retour</a>
+            <a type="button" class="btn btn-primary me-md-2" data-toggle="button" aria-pressed="false"
+                autocomplete="off" style="font-size: 40px;" href="index.php">Retour</a>
         </div>
     </div>
 
@@ -202,7 +223,11 @@ if (!isset($voir_utilisateur['id'])) {
 </body>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+    integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"
+    integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj"
+    crossorigin="anonymous"></script>
 
 </html>

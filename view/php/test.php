@@ -11,6 +11,32 @@ require_once('database.php');
     <title>test</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <style>
+        #scrollUp {
+            position: fixed;
+            bottom: 10px;
+            right: -100px;
+            opacity: 0.5;
+        }
+    </style>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+
+    <script>
+        jQuery(function() {
+            $(function() {
+                $(window).scroll(function() {
+                    if ($(this).scrollTop() > 200) {
+                        $('#scrollUp').css('right', '91%');
+                    } else {
+                        $('#scrollUp').removeAttr('style');
+                    }
+
+                });
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -23,7 +49,7 @@ require_once('database.php');
 
                 <div class="container">
                     <div class="text-center">
-                        <a type="button" class="btn btn-outline-success me-md-2" data-toggle="button" aria-pressed="false" autocomplete="off" style="font-size: 20px" href="creer.php">Créer un nouveau joueur</a>
+                        <a type="button" class="btn btn-outline-success me-md-2" data-toggle="button" aria-pressed="false" autocomplete="off" style="font-size: 20px" href="creer.php">Mettez votre star en avant ! </a>
                     </div>
                 </div>
                 <br>
@@ -56,9 +82,9 @@ require_once('database.php');
                                 <td><?= $cle['poste'] ?></td>
                                 <td><?= $cle['email'] ?></td>
                                 <td><img src="<?= $cle['photo'] ?>" width="80%"></td>
-                                <td><a href="details.php?id=<?= $cle['id'] ?>">details</td>
-                                <td><a href="modifier.php?id=<?= $cle['id'] ?>">modifier</td>
-                                <td><a href="supprimer.php?id=<?= $cle['id'] ?>">supprimer</td>
+                                <td><a type="button" class="btn btn-primary me-md-2" data-toggle="button" aria-pressed="false" autocomplete="off" style="font-size: 10px" href="details.php?id=<?= $cle['id'] ?>">details</a></td>
+                                <td><a type="button" class="btn btn-success me-md-2" data-toggle="button" aria-pressed="false" autocomplete="off" style="font-size: 10px" href="modifier.php?id=<?= $cle['id'] ?>">Modifier</a></td>
+                                <td><a type="button" class="btn btn-danger me-md-2" data-toggle="button" aria-pressed="false" autocomplete="off" style="font-size: 10px" href="supprimer.php?id=<?= $cle['id'] ?>" onclick="return confirm('Etes vous sur de vouloir supprimer cette star')">Supprimer</a></td>
 
                             </tr>
                         <?php
@@ -69,6 +95,11 @@ require_once('database.php');
             </section>
         </div>
     </main>
+
+
+    <div id="scrollUp">
+        <a href="#top"><img src="2top.png" /></a>
+    </div>
 </body>
 
 </html>

@@ -84,3 +84,4 @@ function deleteUser(int $id)
     header('Location: test.php?message=<h1>test id: '. $id . ' bien supprimé</h1>');
     exit();    
 }
+
